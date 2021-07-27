@@ -1,0 +1,99 @@
+openapi: 3.0.0
+info:
+  title: Translation service running on Apertium RDF v.2 based on the One-Time Inverse Consultation method
+  description: Provides translations of from a source language into a target langugage by pivoting on a third language in the Apertium RDF graph  
+  version: 1.0.0-oas3
+paths:
+  '/translation/{source}-{pivot}-{target}/{entry}':
+    get:
+      operationId: translatablepairs
+      summary: Given a source, pivot, and target languages, returns a list of inferred TranslatablePair instances for the given entry in the source language
+      parameters:
+        - in: path
+          name: source
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: pivot
+          schema:
+            type: string
+            example: es
+          required: true
+        - in: path
+          name: target
+          schema:
+            type: string
+            example: fr
+          required: true
+        - in: path
+          name: entry
+          schema:
+            type: string
+            example: dog
+          required: true
+      responses:
+        '200':
+          description: An array of TranslatablePair instances
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                   $ref: '#/components/schemas/TranslatablePair'
+        '404':
+          description: "Translation not found"
+
+   '/translation/{source}-{pivot}-{target}':
+      get:
+         operationId: sourcepivottargetdictionary
+         summary: Given a source, pivot, and target languages, returns an inferred dictionary in the form of a list of TranslatablePair instances
+         parameters:
+           - in: path
+             name: source
+             schema:
+               type: string
+             required: true
+           - in: path
+             name: pivot
+             schema:
+               type: string
+             required: true
+           - in: path
+             name: target
+             schema:
+               type: string
+             required: true
+         responses:
+           '200':
+             description: An array of TranslatablePair instances
+             content:
+               application/json:
+                 schema:
+                   type: array
+                   items: 
+                      $ref: '#/components/schemas/TranslatablePair'
+       
+components:
+  schemas:
+    TranslatablePair:
+      type: object
+      required:
+        - sourceEntryURI
+        - targetEntryURI
+        - targetLabel
+        - pos
+        - score
+      properties:
+        sourceEntryURI:
+          type: string
+        targetEntryURI:
+          type: string
+        targetLabel:
+          type: string
+        pos:
+          type: string
+        score: 
+          type: double
+           
+ 
