@@ -5,7 +5,7 @@ WORKDIR /app
 COPY ./ /app
 RUN chmod +x /app
 
-COPY ./src/main/resources/openapi.yml /app/openapi.yml
+COPY ./src/main/resources/openapi.yml /openapi.yml
 
 EXPOSE 8080
 

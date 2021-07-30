@@ -1,99 +1,85 @@
-openapi: 3.0.0
+openapi: 3.0.1
 info:
-  title: Translation service running on Apertium RDF v.2 based on the One-Time Inverse Consultation method
-  description: Provides translations of from a source language into a target langugage by pivoting on a third language in the Apertium RDF graph  
+  title: CIDER-EM API
+  description: "CIDER-EM Context and Inference baseD ontology alignER. CIDER-EM is\
+    \ a word-embedding-based system for monolingual and cross-lingual ontology alignment\
+    \ deveoped by the SID group (University of Zaragoza). It evolves the CIDER-CL\
+    \ tool, deveoped at OEG (Universidad Politécnica de Madrid) and SID (University\
+    \ of Zaragoza) by including the use of word embeddings."
+  license:
+    name: GNU General Public License version 3
+    url: "https://www.gnu.org/licenses/gpl-3.0.html"
   version: 1.0.0-oas3
-paths:
-  '/translation/{source}-{pivot}-{target}/{entry}':
-    get:
-      operationId: translatablepairs
-      summary: Given a source, pivot, and target languages, returns a list of inferred TranslatablePair instances for the given entry in the source language
-      parameters:
-        - in: path
-          name: source
-          schema:
-            type: string
-          required: true
-        - in: path
-          name: pivot
-          schema:
-            type: string
-            example: es
-          required: true
-        - in: path
-          name: target
-          schema:
-            type: string
-            example: fr
-          required: true
-        - in: path
-          name: entry
-          schema:
-            type: string
-            example: dog
-          required: true
-      responses:
-        '200':
-          description: An array of TranslatablePair instances
-          content:
-            application/json:
-              schema:
-                type: array
-                items: 
-                   $ref: '#/components/schemas/TranslatablePair'
-        '404':
-          description: "Translation not found"
+  x-port: 8080
 
-   '/translation/{source}-{pivot}-{target}':
-      get:
-         operationId: sourcepivottargetdictionary
-         summary: Given a source, pivot, and target languages, returns an inferred dictionary in the form of a list of TranslatablePair instances
-         parameters:
-           - in: path
-             name: source
-             schema:
-               type: string
-             required: true
-           - in: path
-             name: pivot
-             schema:
-               type: string
-             required: true
-           - in: path
-             name: target
-             schema:
-               type: string
-             required: true
-         responses:
-           '200':
-             description: An array of TranslatablePair instances
-             content:
-               application/json:
-                 schema:
-                   type: array
-                   items: 
-                      $ref: '#/components/schemas/TranslatablePair'
-       
+paths:
+  /align/entities:
+    post:
+      tags:
+      - alignment
+      description: "Given the URIs of two ontologies and two ontology elements, and\
+        \ a language code, return the cosine similarity between the two ontology entities"
+      operationId: getEntitySimilarity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EntitySimilarity"
+        required: true
+      responses:
+        "200":
+          description: An EntitySimilarity instance
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/EntitySimilarity"
+  /align/ontologies:
+    get:
+      tags:
+      - alignment
+      description: "Given the URIs of two ontologies, return an ontology alignment\
+        \ in RDF following the Alignment Format [https://moex.gitlabpages.inria.fr/alignapi/format.html]"
+      operationId: ontologyAlignment
+      parameters:
+      - name: uri1
+        in: query
+        required: true
+        schema:
+          type: string
+        example: "http://oaei.ontologymatching.org/2011/benchmarks/101/onto.rdf"
+      - name: uri2
+        in: query
+        required: true
+        schema:
+          type: string
+        example: "http://oaei.ontologymatching.org/2011/benchmarks/203/onto.rdf"
+      responses:
+        "200":
+          description: An EntitySimilarity instance
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
 components:
   schemas:
-    TranslatablePair:
+    EntitySimilarity:
       type: object
-      required:
-        - sourceEntryURI
-        - targetEntryURI
-        - targetLabel
-        - pos
-        - score
       properties:
-        sourceEntryURI:
+        uri1:
           type: string
-        targetEntryURI:
+        uri2:
           type: string
-        targetLabel:
+        onto1:
           type: string
-        pos:
+        onto2:
           type: string
-        score: 
-          type: double
-           
- 
+        lang:
+          type: string
+        similarity:
+          type: number
+          format: double
+        sim:
+          type: number
+          format: double
+          writeOnly: true

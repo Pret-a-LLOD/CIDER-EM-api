@@ -19,9 +19,6 @@
         <mybatis-spring-boot-starter.version>2.1.2</mybatis-spring-boot-starter.version>
         <mybatis-spring-boot-starter-test.version>2.1.2</mybatis-spring-boot-starter-test.version>
         <modelmapper.version>2.3.9</modelmapper.version>
-        <!--  web  -->
-        <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
-        <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
         <!--  app  -->
         <webjars-locator.version>0.30</webjars-locator.version>
         <vue.version>2.6.11</vue.version>
@@ -241,18 +238,6 @@
         </dependency>
 
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${springfox-swagger-ui.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${springfox-swagger2.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>webjars-locator</artifactId>
             <version>${webjars-locator.version}</version>
@@ -283,11 +268,11 @@
       <version>1.5.9</version>
    </dependency>
 
-   <dependency>
-      <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-webmvc-core</artifactId>
-      <version>1.5.9</version>
-   </dependency>
+<!--    <dependency> -->
+<!--       <groupId>org.springdoc</groupId> -->
+<!--       <artifactId>springdoc-openapi-webmvc-core</artifactId> -->
+<!--       <version>1.5.9</version> -->
+<!--    </dependency> -->
    
    <dependency>
     <groupId>javax.servlet</groupId>
