@@ -58,7 +58,7 @@ A successful result will look as follows:
 }
 ```  
 
-2. `GET /align/ontologies?uri1={uri1}&uri2={uri2}`, e.g. `/align/ontologies?uri1=http://oaei.ontologymatching.org/2011/benchmarks/101/onto.rdf&uri2=http://oaei.ontologymatching.org/2011/benchmarks/203/onto.rdf` Given the URIs of two ontologies, return an ontology alignment in RDF following [the Alignment Format](https://moex.gitlabpages.inria.fr/alignapi/format.html). 
+2. `GET /align/ontologies?uri1={uri1}&uri2={uri2}`, e.g. `/align/ontologies?uri1=http://oaei.ontologymatching.org/2011/benchmarks/101/onto.rdf&uri2=http://oaei.ontologymatching.org/2011/benchmarks/203/onto.rdf` Given the URIs of two ontologies, return an ontology alignment in RDF following [the Alignment Format](https://moex.gitlabpages.inria.fr/alignapi/format.html). This request can take up to ~1h 30min to finish. 
 
 ## Installation 
 
