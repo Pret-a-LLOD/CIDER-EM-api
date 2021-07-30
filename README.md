@@ -3,7 +3,7 @@
 
 Context and Inference baseD ontology alignER. 
 
-**CIDER-EM** is a word-embedding-based system for monolingual and cross-lingual ontology alignment deveoped by the SID group (University of Zaragoza). It evolves the [CIDER-CL](https://github.com/jogracia/cider-cl) tool, deveoped at OEG (Universidad Politécnica de Madrid) and SID (University of Zaragoza) by including the use of word embeddings.
+**CIDER-EM** is a word-embedding-based system for monolingual and cross-lingual ontology alignment deveoped by the SID group (University of Zaragoza). It evolves the [CIDER-CL](https://github.com/jogracia/cider-cl) tool, deveoped at OEG (Universidad PolitÃ©cnica de Madrid) and SID (University of Zaragoza) by including the use of word embeddings.
    	
 
 >    This program is free software: you can redistribute it and/or modify
@@ -21,25 +21,57 @@ Context and Inference baseD ontology alignER.
 
 ----------
 ### Features
-- It operates as **aligner** between two ontologies (using *Aligner.java* class) 
--  It aligns **classes** and **properties**, but not instances.
-- It can operate in two modes: 
+- It operates as **aligner** between two ontologies
+- It aligns **classes** and **properties**, but not instances.
+- The REST Api can currently operate in monolingual mode: 
 	 * **Monolingual.** 
 	     * It gets the word embeding from the ontology's language.
 	     * It computes the word-embedding-based value of the relatedness between two entities from two ontologies in the same language.
 		 * 	It performs elementary computations of *"cosine similarity"* to compare several features of the ontological description of the compared entities. 
-		 * 	Such features are combined by means of multilayer perceptrons (one for classes and another one for properties) to produce a final value. 
-	 * **Crosslingual.**
-		 * It gets the word-embedings from both ontologies' languages.
-		 * *Preprocessing:* The word embeddings must have the same nature and must be rotated in order to be in the same vector space, which allow compute the cosine distance between entities from different languages. Those crosslingual mappings are done with [Vecmap](https://github.com/artetxem/vecmap).
-		 *  It computes the word-embedding-based value of the relatedness between two entities from two ontologies in different languages.
-		 * 	It performs elementary computations of *"cosine similarity"* to compare several features of the ontological description of the compared entities. 
-		 * 	Such features are combined by means of multilayer perceptrons (one for classes and another one for properties) to produce a final value. 
+		 * 	Such features are combined by means of multilayer perceptrons (one for classes and another one for properties) to produce a final value.
 
 - This aligner is not intended to operate with large ontologies.
 
-### Word Embeddings
-You can download some word embeddings [here](https://drive.google.com/drive/folders/188jUDHGBYrLYKLbVTVY0mmsT8OgvojW5?usp=sharing).
+Currently, the **REST Api** has the following endpoints:
+
+1. `POST /align/entities`.  Given the URIs of two ontologies and two ontology elements, and a language code, return the cosine similarity between the two ontology entities. The body should have the following format (example): 
+
+```
+{
+  "uri1": "http://oaei.ontologymatching.org/2011/benchmarks/101/onto.rdf#author",
+  "uri2": "http://oaei.ontologymatching.org/2011/benchmarks/203/onto.rdf#author",
+  "onto1": "http://oaei.ontologymatching.org/2011/benchmarks/101/onto.rdf",
+  "onto2": "http://oaei.ontologymatching.org/2011/benchmarks/203/onto.rdf",
+  "lang": "en"
+}
+```
+A successful result will look as follows: 
+
+```
+{
+    "uri1": "http://oaei.ontologymatching.org/2011/benchmarks/101/onto.rdf#author",
+    "uri2": "http://oaei.ontologymatching.org/2011/benchmarks/203/onto.rdf#author",
+    "onto1": "http://oaei.ontologymatching.org/2011/benchmarks/101/onto.rdf",
+    "onto2": "http://oaei.ontologymatching.org/2011/benchmarks/203/onto.rdf",
+    "lang": "en",
+    "similarity": 0.9739285255652004
+}
+```  
+
+2. `GET /align/ontologies?uri1={uri1}&uri2={uri2}`, e.g. `/align/ontologies?uri1=http://oaei.ontologymatching.org/2011/benchmarks/101/onto.rdf&uri2=http://oaei.ontologymatching.org/2011/benchmarks/203/onto.rdf` Given the URIs of two ontologies, return an ontology alignment in RDF following [the Alignment Format](https://moex.gitlabpages.inria.fr/alignapi/format.html). 
+
+## Installation 
+
+Requirements: To run this API locally, please ensure that you have Java and the build automation tool Maven installed. 
+
+To install the project locally, follow these steps: 
+
+1. Download some word embeddings [here](https://drive.google.com/drive/folders/188jUDHGBYrLYKLbVTVY0mmsT8OgvojW5?usp=sharing). They need to be placed in the following path: `src/main/resources/word-embeddings` directory. 
+2. In the root directory, run the command `mvn install` . 
+3. Once the project has been successfully built, run in the same directory the command `java -jar target/cider-em-0.0.1-SNAPSHOT.jar` to start the server.
+4. Access the API at http://localhost:8080 . 
+
+As an alternative, there is a Docker image at https://hub.docker.com/r/pretallod/link-cider-em . 
 
 ----------
 > **Note:** This version is *under development*. You can find the last working version of the aligner [here](https://github.com/jogracia/cider-cl).
