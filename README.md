@@ -71,7 +71,7 @@ To install the project locally, follow these steps:
 3. Once the project has been successfully built, run in the same directory the command `java -jar target/cider-em-0.0.1-SNAPSHOT.jar` to start the server.
 4. Access the API at http://localhost:8080 . 
 
-As an alternative, there is a Docker image at https://hub.docker.com/r/pretallod/link-cider-em . 
+As an alternative, there is a Docker image at https://hub.docker.com/r/pretallod/link-cider-em (note its size is ~9GB). 
 
 ----------
 > **Note:** This version is *under development*. You can find the last working version of the aligner [here](https://github.com/jogracia/cider-cl).
